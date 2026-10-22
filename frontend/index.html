@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SESI+INDÚSTRIA | Catálogo de Cursos - CTED</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a href="#conteudo-principal" class="skip-link">Pular para o conteúdo principal</a>
+
+  <!-- CABEÇALHO FIXO -->
+  <header id="site-header" class="site-header">
+    <div class="container header-inner">
+      <a href="#" id="link-logo" class="logo" aria-label="SESI Indústria - Ir para o início">
+        <span class="logo-bars" aria-hidden="true">≡</span>
+        <strong>SESI<span class="logo-plus">+</span>INDÚSTRIA</strong>
+        <span class="logo-bars" aria-hidden="true">≡</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Navegação principal">
+        <ul>
+          <li><a href="#inicio" class="nav-link" data-nav="home">Início</a></li>
+          <li><a href="#secao-cursos" class="nav-link" data-nav="cursos">Cursos</a></li>
+          <li><a href="#secao-impacto" class="nav-link" data-nav="sobre">Sobre</a></li>
+          <li><a href="#area-aluno" class="btn-outline-header">Área do aluno</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo-principal">
+    <!-- ==========================================
+         VISÃO 1: PÁGINA INICIAL + CATÁLOGO DE CURSOS
+         ========================================== -->
+    <div id="view-home">
+      <!-- HERO BANNER VERMELHO -->
+      <section id="inicio" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+          <div class="hero-text">
+            <h1>Impulsione sua carreira na indústria</h1>
+            <p>Amplie seus conhecimentos com excelência na melhor plataforma de estudos da indústria brasileira</p>
+            <a href="#secao-cursos" class="btn-white">
+              Conhecer cursos <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO PRINCIPAIS CURSOS & CATÁLOGO COM BUSCA E FILTROS -->
+      <section id="secao-cursos" class="courses-section container" aria-labelledby="titulo-principais-cursos">
+        <div class="section-header-row">
+          <div>
+            <h2 id="titulo-principais-cursos" class="section-title">Principais cursos</h2>
+            <p id="contador-resultados" class="results-counter" aria-live="polite">
+              Carregando catálogo de cursos...
+            </p>
+          </div>
+        </div>
+
+        <!-- BARRA DE PESQUISA E FILTROS COMBINADOS (Requisito obrigatório do PDF) -->
+        <form id="form-filtros" class="catalog-filters" role="search" aria-label="Pesquisar e filtrar cursos" onsubmit="event.preventDefault();">
+          <div class="filter-field filter-search">
+            <label for="input-pesquisa">Pesquisar pelo nome</label>
+            <input
+              type="search"
+              id="input-pesquisa"
+              placeholder="Ex: Matemática, Metalurgia, Design Têxtil..."
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="filter-field">
+            <label for="select-categoria">Categoria</label>
+            <select id="select-categoria">
+              <option value="">Todas as categorias</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label for="select-modalidade">Modalidade</label>
+            <select id="select-modalidade">
+              <option value="">Todas as modalidades</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label for="select-status">Status</label>
+            <select id="select-status">
+              <option value="">Todos os status</option>
+            </select>
+          </div>
+
+          <div class="filter-actions">
+            <button type="button" id="btn-limpar-filtros" class="btn-outline-dark">
+              Limpar filtros
+            </button>
+          </div>
+        </form>
+
+        <!-- ESTADO DE CARREGAMENTO -->
+        <div id="estado-carregamento" class="state-box" role="status" aria-live="polite">
+          <div class="spinner" aria-hidden="true"></div>
+          <p>Carregando cursos disponíveis...</p>
+        </div>
+
+        <!-- ESTADO DE ERRO -->
+        <div id="estado-erro" class="state-box state-error" role="alert" hidden>
+          <h3>Não foi possível carregar o catálogo de cursos</h3>
+          <p>Verifique se o servidor Back-end (.NET) está ativo e tente novamente.</p>
+          <button type="button" id="btn-tentar-novamente" class="btn-dark">Tentar novamente</button>
+        </div>
+
+        <!-- ESTADO VAZIO (Nenhum curso encontrado) -->
+        <div id="estado-vazio" class="state-box state-empty" aria-live="polite" hidden>
+          <h3>Nenhum curso encontrado</h3>
+          <p>Não encontramos nenhuma oferta com os termos ou filtros selecionados.</p>
+          <button type="button" id="btn-limpar-vazio" class="btn-dark">Limpar filtros aplicados</button>
+        </div>
+
+        <!-- CARROSSEL / GRADE DE CARDS DE CURSOS -->
+        <div id="grade-cursos" class="courses-track" role="region" aria-label="Lista de cursos disponíveis" hidden></div>
+
+        <div class="courses-footer-controls">
+          <button type="button" id="btn-ver-todos" class="btn-outline-dark">
+            Ver todos os cursos
+          </button>
+          <div class="carousel-arrows" aria-label="Navegação da lista de cursos">
+            <button type="button" id="btn-scroll-prev" class="arrow-btn" aria-label="Cursos anteriores">&larr;</button>
+            <button type="button" id="btn-scroll-next" class="arrow-btn" aria-label="Próximos cursos">&rarr;</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO IMPACTO TRANSFORMADOR -->
+      <section id="secao-impacto" class="impact-section container" aria-labelledby="titulo-impacto">
+        <div class="impact-grid">
+          <div class="impact-intro">
+            <h2 id="titulo-impacto" class="section-title">Impacto<br>transformador</h2>
+            <p>Resultados que demonstram o sucesso da nossa metodologia de capacitação contínua para a indústria</p>
+          </div>
+
+          <div class="impact-stats-col">
+            <div class="stat-list">
+              <div class="stat-row">
+                <strong class="stat-number">25.000+</strong>
+                <span class="stat-label">Profissionais Capacitados</span>
+              </div>
+              <div class="stat-row">
+                <strong class="stat-number">500+</strong>
+                <span class="stat-label">Empresas parceiras</span>
+              </div>
+              <div class="stat-row">
+                <strong class="stat-number">4.8/5</strong>
+                <span class="stat-label">Avaliação média</span>
+              </div>
+              <div class="stat-row">
+                <strong class="stat-number">2.5M+</strong>
+                <span class="stat-label">Horas de capacitação</span>
+              </div>
+            </div>
+
+            <div class="features-row three-cols">
+              <div class="feature-item">
+                <div class="icon-box icon-box-pink" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C21E24" stroke-width="2">
+                    <circle cx="12" cy="8" r="6"></circle>
+                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+                  </svg>
+                </div>
+                <h3>Certificação SESI</h3>
+                <p>Cursos com a melhor certificação do mercado industrial reconhecidos pelo SESI.</p>
+              </div>
+
+              <div class="feature-item">
+                <div class="icon-box icon-box-pink" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C21E24" stroke-width="2">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                  </svg>
+                </div>
+                <h3>Professores especialistas</h3>
+                <p>Contamos com professores reconhecidos por sua excelência no mercado.</p>
+              </div>
+
+              <div class="feature-item">
+                <div class="icon-box icon-box-pink" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C21E24" stroke-width="2">
+                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+                  </svg>
+                </div>
+                <h3>Suporte contínuo</h3>
+                <p>Você não está sozinho! Acompanhamento online durante todo o curso.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO DEPOIMENTOS (VERMELHO ESCURO) + CTA VÍDEO -->
+      <section class="testimonials-red-section" aria-labelledby="titulo-depoimentos-home">
+        <div class="container">
+          <span class="eyebrow-light">DEPOIMENTOS</span>
+          <h2 id="titulo-depoimentos-home" class="section-title text-white">Quem fez recomenda</h2>
+
+          <div class="testimonials-track" id="depoimentos-home-track"></div>
+
+          <div class="carousel-arrows arrows-light">
+            <button type="button" class="arrow-btn-light" onclick="rolarDepoimentos('depoimentos-home-track', -1)" aria-label="Depoimento anterior">&larr;</button>
+            <button type="button" class="arrow-btn-light" onclick="rolarDepoimentos('depoimentos-home-track', 1)" aria-label="Próximo depoimento">&rarr;</button>
+          </div>
+
+          <div class="cta-video-grid">
+            <div class="cta-video-text">
+              <h2>Pronto para transformar sua carreira?</h2>
+              <p>Junte-se a milhares de profissionais que já estão transformando a indústria através dos nossos cursos. Invista no seu futuro hoje mesmo!</p>
+              <a href="#secao-cursos" class="btn-white">
+                Matricule-se <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+            <div class="video-card">
+              <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=900&q=80" alt="Profissionais da indústria analisando equipamento" />
+              <button type="button" class="play-btn" aria-label="Reproduzir vídeo institucional">
+                &#9654;
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==========================================
+         VISÃO 2: PÁGINA DE DETALHES DO CURSO (FIGMA TELAS 7-10)
+         ========================================== -->
+    <div id="view-detalhes" hidden>
+      <div class="container details-top-bar">
+        <button type="button" id="btn-voltar-catalogo" class="btn-back">
+          &larr; Voltar para o catálogo de cursos
+        </button>
+      </div>
+
+      <!-- HERO DO CURSO -->
+      <section class="course-detail-hero container">
+        <div class="detail-hero-left">
+          <span id="detalhe-categoria-badge" class="category-pill pill-math">MATEMÁTICA</span>
+          <h1 id="detalhe-titulo">Título do Curso</h1>
+
+          <ul class="detail-meta-list">
+            <li>
+              <span aria-hidden="true">📅</span>
+              <span>Início do curso: <strong id="detalhe-data">05/01/2026</strong></span>
+            </li>
+            <li>
+              <span aria-hidden="true">🏅</span>
+              <span>Certificação: <strong>SESI</strong> (<span id="detalhe-nome-breve"></span>)</span>
+            </li>
+            <li>
+              <span aria-hidden="true">⏱️</span>
+              <span>Carga horária: <strong id="detalhe-carga">40h</strong> | Modalidade: <strong id="detalhe-modalidade"></strong></span>
+            </li>
+            <li>
+              <span aria-hidden="true">📌</span>
+              <span>Status da oferta: <strong id="detalhe-status"></strong></span>
+            </li>
+          </ul>
+
+          <button type="button" class="btn-dark btn-lg">
+            Matricule-se <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+
+        <div class="detail-hero-right">
+          <div class="video-card">
+            <img id="detalhe-imagem" src="" alt="Vídeo de apresentação do curso" />
+            <button type="button" class="play-btn" aria-label="Assistir prévia do curso">
+              &#9654;
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 DIFERENCIAIS COM ÍCONE BEGE (#FCD19C) -->
+      <section class="container detail-benefits-section" aria-label="Diferenciais do curso">
+        <div class="features-row four-cols">
+          <div class="feature-item">
+            <div class="icon-box icon-box-beige" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0C0C0D" stroke-width="2">
+                <circle cx="12" cy="8" r="6"></circle>
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+              </svg>
+            </div>
+            <h3>Certificação SESI</h3>
+            <p>Cursos com a melhor certificação do mercado industrial reconhecidos pelo SESI.</p>
+          </div>
+
+          <div class="feature-item">
+            <div class="icon-box icon-box-beige" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0C0C0D" stroke-width="2">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
+            </div>
+            <h3>Professores especialistas</h3>
+            <p>Contamos com professores reconhecidos por sua excelência no mercado.</p>
+          </div>
+
+          <div class="feature-item">
+            <div class="icon-box icon-box-beige" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0C0C0D" stroke-width="2">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+              </svg>
+            </div>
+            <h3>Suporte contínuo</h3>
+            <p>Você não está sozinho! Acompanhamento online durante todo o curso.</p>
+          </div>
+
+          <div class="feature-item">
+            <div class="icon-box icon-box-beige" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0C0C0D" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h3>Flexibilidade</h3>
+            <p>Turmas presenciais e online com horários que se adaptam à sua rotina.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOBRE O CURSO + ACORDEÃO DE MÓDULOS -->
+      <section class="container about-course-section">
+        <div class="about-course-grid">
+          <div class="about-course-text">
+            <h2>Sobre o curso</h2>
+            <p id="detalhe-descricao"></p>
+            <div class="target-audience-box">
+              <strong>Público-alvo:</strong>
+              <p id="detalhe-publico"></p>
+            </div>
+          </div>
+
+          <div class="about-course-accordions">
+            <details class="accordion-item" open>
+              <summary>
+                <span>Módulos</span>
+                <span class="accordion-icon" aria-hidden="true">+</span>
+              </summary>
+              <div id="detalhe-modulos-lista" class="accordion-content"></div>
+            </details>
+
+            <details class="accordion-item">
+              <summary>
+                <span>Aulas online e avaliações</span>
+                <span class="accordion-icon" aria-hidden="true">+</span>
+              </summary>
+              <div class="accordion-content">
+                <p>As aulas combinam conteúdos interativos no ambiente virtual Moodle, estudos de caso aplicados à indústria e avaliações práticas por módulo para emissão da certificação SESI.</p>
+              </div>
+            </details>
+
+            <details class="accordion-item">
+              <summary>
+                <span>Dúvidas frequentes</span>
+                <span class="accordion-icon" aria-hidden="true">+</span>
+              </summary>
+              <div class="accordion-content">
+                <p><strong>O curso possui certificado?</strong> Sim, após concluir os módulos com aproveitamento mínimo de 70%, o certificado oficial SESI fica disponível na Área do Aluno.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEPOIMENTOS EM FUNDO BEGE (#FCD19C) -->
+      <section class="testimonials-beige-section" aria-labelledby="titulo-depoimentos-detalhe">
+        <div class="container">
+          <span class="eyebrow-dark">DEPOIMENTOS</span>
+          <h2 id="titulo-depoimentos-detalhe" class="section-title">Quem fez recomenda</h2>
+
+          <div class="testimonials-track" id="depoimentos-detalhe-track"></div>
+
+          <div class="carousel-arrows">
+            <button type="button" class="arrow-btn" onclick="rolarDepoimentos('depoimentos-detalhe-track', -1)" aria-label="Depoimento anterior">&larr;</button>
+            <button type="button" class="arrow-btn" onclick="rolarDepoimentos('depoimentos-detalhe-track', 1)" aria-label="Próximo depoimento">&rarr;</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FALE COM A GENTE (VERMELHO ESCURO) -->
+      <section class="contact-cta-section">
+        <div class="container">
+          <span class="eyebrow-light">PRECISA DE AJUDA PARA DECIDIR?</span>
+          <h2>Fale com a gente</h2>
+          <a href="mailto:contato@sesindustria.com.br" class="btn-white">
+            Mandar uma mensagem <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- BARRA FLUTUANTE FIXA NO RODAPÉ (STICKY BAR DO FIGMA) -->
+      <div class="sticky-enroll-bar" role="region" aria-label="Barra rápida de matrícula">
+        <div class="sticky-enroll-inner">
+          <span id="sticky-curso-titulo" class="sticky-course-name"></span>
+          <button type="button" class="btn-white btn-sm">
+            Matricule-se <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RODAPÉ ESCURO PADRÃO FIGMA -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand-col">
+        <div class="logo logo-footer">
+          <span class="logo-bars" aria-hidden="true">≡</span>
+          <strong>SESI<span class="logo-plus">+</span>INDÚSTRIA</strong>
+          <span class="logo-bars" aria-hidden="true">≡</span>
+        </div>
+        <p>contato@sesindustria.com.br</p>
+        <p>Av. Paulista, 1313</p>
+      </div>
+
+      <div class="footer-links-col">
+        <h3>NAVEGAÇÃO</h3>
+        <ul>
+          <li><a href="#inicio" data-nav="home">Início</a></li>
+          <li><a href="#secao-impacto">Certificação</a></li>
+          <li><a href="#secao-cursos" data-nav="cursos">Cursos</a></li>
+          <li><a href="#secao-impacto">Sobre</a></li>
+          <li><a href="#inicio">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h3>CURSOS POPULARES</h3>
+        <ul>
+          <li><a href="#secao-cursos">Cultura Organizacional</a></li>
+          <li><a href="#secao-cursos">Ferramentas Google para Produtividade</a></li>
+          <li><a href="#secao-cursos">Excel Básico ao Avançado</a></li>
+          <li><a href="#secao-cursos">Trabalho em Equipe e Colaboração</a></li>
+          <li><a href="#secao-cursos">Gestão do Tempo e Produtividade</a></li>
+          <li><a href="#secao-cursos">Comunicação Assertiva</a></li>
+          <li><a href="#secao-cursos">Inteligência Emocional no Trabalho</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h3>SUPORTE</h3>
+        <ul>
+          <li><a href="#inicio">Termos de Uso</a></li>
+          <li><a href="#inicio">Política de Privacidade</a></li>
+          <li><a href="#inicio">Trabalhe Conosco</a></li>
+          <li><a href="mailto:contato@sesindustria.com.br">Fale Conosco</a></li>
+          <li><a href="#inicio">Central de Ajuda</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <div class="footer-copy">
+        <span class="sesi-mini-box">SESI</span>
+        <span>Todos os direitos reservados.</span>
+      </div>
+      <div class="footer-socials" aria-label="Redes sociais">
+        <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">ig</a>
+        <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">fb</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
