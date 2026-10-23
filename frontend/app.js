@@ -1,5 +1,7 @@
-// Altere para a porta em que sua API .NET estiver rodando localmente
-const API_BASE_URL = 'http://localhost:5240/api/cursos';
+const IS_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+const API_BASE_URL = IS_LOCAL
+  ? 'http://localhost:5240/api/cursos'
+  : 'https://SUA-URL-DO-RENDER.onrender.com/api/cursos';
 
 const DEPOIMENTOS_FIGMA = [
   {
