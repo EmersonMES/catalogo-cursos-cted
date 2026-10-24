@@ -148,3 +148,4 @@ C:\Users\Emerson Matos\Desktop\catalogo-cursos-cted\backend\CtedCatalogo.Api\obj
 C:\Users\Emerson Matos\Desktop\catalogo-cursos-cted\backend\CtedCatalogo.Api\obj\Debug\net10.0\CtedCatalogo.Api.pdb
 C:\Users\Emerson Matos\Desktop\catalogo-cursos-cted\backend\CtedCatalogo.Api\obj\Debug\net10.0\CtedCatalogo.Api.genruntimeconfig.cache
 C:\Users\Emerson Matos\Desktop\catalogo-cursos-cted\backend\CtedCatalogo.Api\obj\Debug\net10.0\ref\CtedCatalogo.Api.dll
+C:\Users\Emerson Matos\Desktop\catalogo-cursos-cted\backend\CtedCatalogo.Api\obj\Debug\net10.0\CtedCatalogo.Api.sourcelink.json

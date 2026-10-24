@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CtedCatalogo.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c8793618e40cf1813982899b267a6d47a96b776")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+22b96a5790cb249f4a1b5cba51f0cb9fb6110835")]
 [assembly: System.Reflection.AssemblyProductAttribute("CtedCatalogo.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CtedCatalogo.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
